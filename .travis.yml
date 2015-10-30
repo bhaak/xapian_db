@@ -1,3 +1,17 @@
 language: ruby
 rvm:
   - 1.9.3
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - uuid-dev # needed for compiling xapian-ruby
+
+notifications:
+  irc:
+    channels: "chat.freenode.net##unnethack"
+    use_notice: true
+    skip_join: true
+
