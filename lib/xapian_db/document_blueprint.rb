@@ -274,6 +274,7 @@ module XapianDb
       @dependencies         = []
       @_natural_sort_order  = :id
       @autoindex            = true
+      @normalize_method     = nil
     end
 
     # Set the adapter
@@ -409,6 +410,16 @@ module XapianDb
 
     def dependency(klass_name, when_changed: [], &block)
       @dependencies << Dependency.new(klass_name.to_s, when_changed, block)
+    end
+
+    def normalize_with(method)
+      @normalize_method = method
+    end
+
+    # Reader for normalize_method.
+    # Returns the normalization method for this blueprint, the global method from config or nil.
+    def normalize_method
+      @normalize_method || XapianDb::Config.normalize_method
     end
 
     # Options for an indexed method

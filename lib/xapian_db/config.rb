@@ -32,7 +32,7 @@ module XapianDb
       end
 
       # Install delegates for the config instance variables
-      [:database, :adapter, :writer, :stemmer, :stopper].each do |attr|
+      [:database, :adapter, :writer, :stemmer, :stopper, :normalize_method].each do |attr|
         define_method attr do
           @config.nil? ? nil : @config.instance_variable_get("@_#{attr}")
         end
@@ -181,6 +181,17 @@ module XapianDb
     def disable_query_flag(flag)
       @_enabled_query_flags ||= []
       @_enabled_query_flags.delete flag
+    end
+
+    # Set the language.
+    # @param [Symbol] lang The language; apply the two letter ISO639 code for the language
+    # @example
+    #   XapianDb::Config.setup do |config|
+    #     config.normalize_with Klass.method(:normalize)
+    #   end
+    # see {LANGUAGE_MAP} for supported languages
+    def normalize_with(method)
+      @_normalize_method = method
     end
 
   end
